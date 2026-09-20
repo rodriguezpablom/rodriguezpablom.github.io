@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pablo M. Rodriguez | Academic Webpage</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Academic Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <!-- KaTeX for Math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        scroll-behavior: smooth;
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed">
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="#" class="font-bold text-xl text-slate-900 tracking-tight">Pablo M. Rodriguez</a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                    <a href="#about" class="hover:text-blue-600 transition">About</a>
+                    <a href="#research" class="hover:text-blue-600 transition">Research</a>
+                    <a href="#publications" class="hover:text-blue-600 transition">Publications</a>
+                    <a href="#teaching" class="hover:text-blue-600 transition">Teaching</a>
+                    <a href="#contact" class="hover:text-blue-600 transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- Profile / Hero Section -->
+        <section id="about" class="grid md:grid-cols-3 gap-8 items-center bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <div class="md:col-span-1 flex flex-col items-center text-center">
+                <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner mb-4">
+                    <img src="Pablo.jpeg" alt="Pablo M. Rodriguez" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/200?text=Pablo+M.+Rodriguez'">
+                </div>
+                <h1 class="text-2xl font-bold text-slate-900">Pablo M. Rodriguez</h1>
+                <p class="text-sm text-slate-500 font-medium mt-1">Assistant Professor (Professor Adjunto)</p>
+                <p class="text-xs text-slate-400">Department of Statistics, UFPE</p>
+
+                <!-- Social & Academic Links -->
+                <div class="flex flex-wrap justify-center gap-3 mt-4 text-xl text-slate-600">
+                    <a href="mailto:pablo@de.ufpe.br" title="Email" class="hover:text-blue-600 transition"><i class="fa-solid me-1 fa-envelope"></i></a>
+                    <a href="https://github.com" target="_blank" title="GitHub" class="hover:text-blue-600 transition"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://scholar.google.com" target="_blank" title="Google Scholar" class="hover:text-blue-600 transition"><i class="ai ai-google-scholar"></i></a>
+                    <a href="https://orcid.org" target="_blank" title="ORCID" class="hover:text-blue-600 transition"><i class="ai ai-orcid"></i></a>
+                    <a href="http://lattes.cnpq.br/" target="_blank" title="Lattes CV" class="hover:text-blue-600 transition"><i class="ai ai-lattes"></i></a>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 space-y-4">
+                <h2 class="text-xl font-semibold text-slate-900 border-b pb-2 border-slate-100">About Me</h2>
+                <p class="text-slate-600">
+                    I am an Assistant Professor in the Department of Statistics at the 
+                    <strong class="text-slate-800">Federal University of Pernambuco (UFPE)</strong> in Recife, Brazil. I am also a researcher at 
+                    <strong class="text-slate-800">INCT-NUMEC</strong> (based at IME-USP) and serve on the council of the 
+                    <strong class="text-slate-800">Brazilian Society of Computational and Applied Mathematics (SBMAC)</strong>, where I previously served as President.
+                </p>
+                <p class="text-slate-600">
+                    My research focuses on probability theory and its applications, specifically interacting particle systems, percolation models, stochastic processes on graphs, random structures, and evolution algebras.
+                </p>
+
+                <!-- Badges / Highlights -->
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                        <span class="block text-xs uppercase tracking-wider text-slate-400 font-semibold">Erdős Number</span>
+                        <span class="text-lg font-bold text-blue-600">3</span>
+                        <span class="text-xs text-slate-500 block">(via Kang $\rightarrow$ Loebl $\rightarrow$ Erdős)</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                        <span class="block text-xs uppercase tracking-wider text-slate-400 font-semibold">Research Group</span>
+                        <span class="text-sm font-semibold text-slate-800">Stochastic Processes &amp; Random Structures</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Topics -->
+        <section id="research" class="space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Research Focus</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Stochastic Rumors & Spreading Processes</h3>
+                    <p class="text-sm text-slate-600">Modified Daley-Kendall and Maki-Thompson rumor models, phase transitions, dynamic phenomena on random graphs and trees.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Percolation & Random Structures</h3>
+                    <p class="text-sm text-slate-600">Accessibility percolation on trees, inhomogeneous random graphs, interacting particle systems, and branching processes with selection.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-square-root-variable"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Evolution Algebras</h3>
+                    <p class="text-sm text-slate-600">Algebraic structures connected to discrete-time Markov chains, graph evolution algebras, derivations, and isomorphism characterization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Publications -->
+        <section id="publications" class="space-y-6">
+            <div class="flex justify-between items-end border-b border-slate-200 pb-3">
+                <h2 class="text-2xl font-bold text-slate-900">Selected Publications</h2>
+                <a href="https://scholar.google.com" target="_blank" class="text-sm font-semibold text-blue-600 hover:underline">Full list on Google Scholar &rarr;</a>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Paper Item 1 -->
+                <div class="bg-white p-5 rounded-lg border border-slate-200/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-semibold text-slate-900">Multistability, intermittency and hybrid transitions in social contagion models on hypergraphs</h3>
+                        <p class="text-sm text-slate-500 mt-1">G. F. de Arruda, G. Petri, <strong>P. M. Rodriguez</strong>, Y. Moreno</p>
+                        <p class="text-xs text-slate-400 mt-1 font-mono">Nature Communications 14 (2023): 1375</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <a href="#" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-xs font-medium rounded text-slate-700 transition">DOI</a>
+                        <a href="#" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-xs font-medium rounded text-blue-600 transition">arXiv</a>
+                    </div>
+                </div>
+
+                <!-- Paper Item 2 -->
+                <div class="bg-white p-5 rounded-lg border border-slate-200/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-semibold text-slate-900">On Hilbert evolution algebras of a graph</h3>
+                        <p class="text-sm text-slate-500 mt-1">S. J. Vidal, P. Cadavid, <strong>P. M. Rodriguez</strong></p>
+                        <p class="text-xs text-slate-400 mt-1 font-mono">Siberian Mathematical Journal 63 (2022): 995-1011</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <a href="#" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-xs font-medium rounded text-slate-700 transition">DOI</a>
+                        <a href="#" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-xs font-medium rounded text-blue-600 transition">arXiv</a>
+                    </div>
+                </div>
+
+                <!-- Paper Item 3 -->
+                <div class="bg-white p-5 rounded-lg border border-slate-200/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-semibold text-slate-900">Stochastic rumors on random trees</h3>
+                        <p class="text-sm text-slate-500 mt-1">V. V. Junior, <strong>P. M. Rodriguez</strong>, A. Speroto</p>
+                        <p class="text-xs text-slate-400 mt-1 font-mono">Journal of Statistical Mechanics: Theory and Experiment (2021)</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <a href="#" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-xs font-medium rounded text-slate-700 transition">DOI</a>
+                        <a href="#" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-xs font-medium rounded text-blue-600 transition">arXiv</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teaching Section -->
+        <section id="teaching" class="space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Teaching</h2>
+            <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm space-y-4">
+                <h3 class="font-bold text-lg text-slate-800 border-b pb-2">Pós-Graduação em Estatística (UFPE)</h3>
+                <ul class="grid md:grid-cols-2 gap-3 text-sm text-slate-600">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-blue-500 text-xs"></i> <strong>PGE950</strong> - Probabilidade</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-blue-500 text-xs"></i> <strong>PGE966</strong> - Processos Estocásticos</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-blue-500 text-xs"></i> <strong>PGE1005</strong> - Probabilidade Avançada I</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-blue-500 text-xs"></i> <strong>PGE977</strong> - Tópicos Especiais em Processos Estocásticos</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-slate-900 text-slate-100 p-8 rounded-2xl shadow-md grid md:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4">Contact &amp; Location</h2>
+                <p class="text-slate-300 text-sm mb-4">Feel free to reach out for research collaborations, graduate student opportunities, or general inquiries.</p>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><i class="fa-solid fa-envelope text-blue-400 w-6"></i> pablo@de.ufpe.br</p>
+                    <p><i class="fa-solid fa-building text-blue-400 w-6"></i> Office 442, CCEN</p>
+                    <p><i class="fa-solid fa-location-dot text-blue-400 w-6"></i> Departamento de Estatística - UFPE</p>
+                </div>
+            </div>
+            <div class="bg-slate-800 p-4 rounded-xl text-xs text-slate-300 font-mono space-y-1 border border-slate-700">
+                <p class="text-slate-400 font-bold uppercase tracking-wider mb-2">Mailing Address</p>
+                <p>Departamento de Estatística, CCEN</p>
+                <p>Universidade Federal de Pernambuco (UFPE)</p>
+                <p>Av. Jornalista Aníbal Fernandes, 497-629</p>
+                <p>Cidade Universitária, CEP 50740-540</p>
+                <p>Recife - PE, Brazil</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 mt-16 bg-white py-6 text-center text-xs text-slate-400">
+        <p>© <script>document.write(new Date().getFullYear())</script> Pablo M. Rodriguez. Hosted for free on <a href="https://pages.github.com" class="underline hover:text-slate-600">GitHub Pages</a>.</p>
+    </footer>
+
+</body>
+</html>
