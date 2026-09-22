@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maki-Thompson Rumor Model Simulation (Complete Graph)</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --ignorant-color: #3b82f6; /* Blue */
+            --spreader-color: #ef4444; /* Red */
+            --stifler-color: #64748b;  /* Gray */
+            --accent-color: #10b981;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #f1f5f9;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 1fr;
+            gap: 1rem;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .controls h2 {
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent-color);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        button {
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #475569;
+        }
+
+        button.primary {
+            background-color: var(--accent-color);
+            color: #022c22;
+        }
+
+        button.primary:hover {
+            background-color: #059669;
+        }
+
+        .stats-box {
+            background: #0f172a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .graph-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .rules-box {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            border-radius: 6px;
+            line-height: 1.4;
+        }
+
+        .rules-box strong {
+            color: var(--text-color);
+        }
+
+        .event-log {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #38bdf8;
+            height: 2.2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background: #090d16;
+            padding: 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Maki-Thompson Rumor Model Simulation</h1>
+        <p>Complete Graph K<sub>N</sub> Dynamics</p>
+    </header>
+
+    <div class="main-container">
+        <!-- Control Panel -->
+        <div class="panel controls">
+            <h2>Parameters & Controls</h2>
+            
+            <div class="control-group">
+                <label>Nodes (N): <span id="val-n">30</span></label>
+                <input type="range" id="param-n" min="10" max="100" value="30">
+            </div>
+
+            <div class="control-group">
+                <label>Initial Spreaders: <span id="val-s0">1</span></label>
+                <input type="range" id="param-s0" min="1" max="5" value="1">
+            </div>
+
+            <div class="control-group">
+                <label>Transmission Prob (λ): <span id="val-lambda">1.00</span></label>
+                <input type="range" id="param-lambda" min="0.1" max="1.0" step="0.05" value="1.0">
+            </div>
+
+            <div class="control-group">
+                <label>Speed (ms/step): <span id="val-speed">200</span></label>
+                <input type="range" id="param-speed" min="20" max="1000" step="20" value="200">
+            </div>
+
+            <div class="stats-box">
+                <div class="stat-row">
+                    <span><span class="badge" style="background: var(--ignorant-color)"></span>Ignorants (I):</span>
+                    <strong id="stat-i">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span><span class="badge" style="background: var(--spreader-color)"></span>Spreaders (S):</span>
+                    <strong id="stat-s">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span><span class="badge" style="background: var(--stifler-color)"></span>Stiflers (R):</span>
+                    <strong id="stat-r">0</strong>
+                </div>
+                <div class="stat-row" style="margin-top: 0.4rem; border-top: 1px dashed #334155; padding-top: 0.4rem;">
+                    <span>Step Time (t):</span>
+                    <strong id="stat-t">0</strong>
+                </div>
+            </div>
+
+            <div class="event-log" id="event-log">System ready. Click Play or Step.</div>
+
+            <div class="rules-box">
+                <strong>Maki-Thompson Rules:</strong><br>
+                When a Spreader (S) contacts:<br>
+                • <strong>Ignorant (I):</strong> I → S (prob λ)<br>
+                • <strong>Spreader (S):</strong> Initiator S → R<br>
+                • <strong>Stifler (R):</strong> Initiator S → R
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-reset">Reset</button>
+                <button id="btn-step">Step</button>
+                <button id="btn-play" class="primary" style="grid-column: span 2;">Auto Play</button>
+            </div>
+        </div>
+
+        <!-- Graph View -->
+        <div class="panel graph-container">
+            <canvas id="graph-canvas"></canvas>
+        </div>
+
+        <!-- Chart View -->
+        <div class="panel graph-container">
+            <canvas id="chart-canvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // State Constants
+        const IGNORANT = 0;
+        const SPREADER = 1;
+        const STIFLER = 2;
+
+        const COLOR_I = '#3b82f6';
+        const COLOR_S = '#ef4444';
+        const COLOR_R = '#64748b';
+
+        // Simulation Variables
+        let N = 30;
+        let S0 = 1;
+        let lambda = 1.0;
+        let speed = 200;
+
+        let state = []; // Array of node states
+        let positions = []; // [{x, y}]
+        let stepCount = 0;
+        let history = { I: [], S: [], R: [], t: [] };
+
+        let isRunning = false;
+        let timer = null;
+        let activePair = null; // Currently interacting node pair {a, b, outcome}
+
+        // Canvas Setup
+        const graphCanvas = document.getElementById('graph-canvas');
+        const graphCtx = graphCanvas.getContext('2d');
+        const chartCanvas = document.getElementById('chart-canvas');
+        const chartCtx = chartCanvas.getContext('2d');
+
+        function resizeCanvases() {
+            const rectG = graphCanvas.parentElement.getBoundingClientRect();
+            graphCanvas.width = rectG.width;
+            graphCanvas.height = rectG.height;
+
+            const rectC = chartCanvas.parentElement.getBoundingClientRect();
+            chartCanvas.width = rectC.width;
+            chartCanvas.height = rectC.height;
+
+            calculatePositions();
+            draw();
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        // UI Controls
+        const inputN = document.getElementById('param-n');
+        const inputS0 = document.getElementById('param-s0');
+        const inputLambda = document.getElementById('param-lambda');
+        const inputSpeed = document.getElementById('param-speed');
+
+        inputN.addEventListener('input', (e) => {
+            document.getElementById('val-n').textContent = e.target.value;
+            resetSimulation();
+        });
+        inputS0.addEventListener('input', (e) => {
+            document.getElementById('val-s0').textContent = e.target.value;
+            resetSimulation();
+        });
+        inputLambda.addEventListener('input', (e) => {
+            document.getElementById('val-lambda').textContent = parseFloat(e.target.value).toFixed(2);
+            lambda = parseFloat(e.target.value);
+        });
+        inputSpeed.addEventListener('input', (e) => {
+            document.getElementById('val-speed').textContent = e.target.value;
+            speed = parseInt(e.target.value);
+            if (isRunning) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('btn-reset').addEventListener('click', resetSimulation);
+        document.getElementById('btn-step').addEventListener('click', () => {
+            stopAutoPlay();
+            stepSimulation();
+        });
+        document.getElementById('btn-play').addEventListener('click', toggleAutoPlay);
+
+        function calculatePositions() {
+            positions = [];
+            const cx = graphCanvas.width / 2;
+            const cy = graphCanvas.height / 2;
+            const radius = Math.min(cx, cy) - 30;
+
+            for (let i = 0; i < N; i++) {
+                const angle = (2 * Math.PI * i) / N - Math.PI / 2;
+                positions.push({
+                    x: cx + radius * Math.cos(angle),
+                    y: cy + radius * Math.sin(angle)
+                });
+            }
+        }
+
+        function resetSimulation() {
+            stopAutoPlay();
+            N = parseInt(inputN.value);
+            S0 = parseInt(inputS0.value);
+            lambda = parseFloat(inputLambda.value);
+
+            state = new Array(N).fill(IGNORANT);
+            
+            // Randomly select initial spreaders
+            let selected = 0;
+            while (selected < S0 && selected < N) {
+                let idx = Math.floor(Math.random() * N);
+                if (state[idx] === IGNORANT) {
+                    state[idx] = SPREADER;
+                    selected++;
+                }
+            }
+
+            stepCount = 0;
+            activePair = null;
+
+            let countI = state.filter(s => s === IGNORANT).length;
+            let countS = state.filter(s => s === SPREADER).length;
+            let countR = state.filter(s => s === STIFLER).length;
+
+            history = {
+                I: [countI],
+                S: [countS],
+                R: [countR],
+                t: [0]
+            };
+
+            calculatePositions();
+            updateStats(countI, countS, countR);
+            logEvent("Simulation initialized.");
+            draw();
+        }
+
+        function stepSimulation() {
+            let spreaders = [];
+            for (let i = 0; i < N; i++) {
+                if (state[i] === SPREADER) spreaders.push(i);
+            }
+
+            if (spreaders.length === 0) {
+                stopAutoPlay();
+                logEvent("Terminal State reached (No active spreaders).");
+                return false;
+            }
+
+            // Pick a random spreader
+            let u = spreaders[Math.floor(Math.random() * spreaders.length)];
+
+            // Pick a random target in complete graph K_N (u != v)
+            let v = Math.floor(Math.random() * (N - 1));
+            if (v >= u) v++;
+
+            let msg = "";
+            if (state[v] === IGNORANT) {
+                if (Math.random() < lambda) {
+                    state[v] = SPREADER;
+                    msg = `Node ${u} (S) infected Node ${v} (I → S)`;
+                } else {
+                    msg = `Node ${u} (S) contacted Node ${v} (I) [Transmission failed]`;
+                }
+            } else if (state[v] === SPREADER) {
+                // Maki-Thompson rule: Only the initiator stops
+                state[u] = STIFLER;
+                msg = `Node ${u} (S) contacted Spreader ${v} → Node ${u} (S → R)`;
+            } else if (state[v] === STIFLER) {
+                state[u] = STIFLER;
+                msg = `Node ${u} (S) contacted Stifler ${v} → Node ${u} (S → R)`;
+            }
+
+            activePair = { a: u, b: v };
+            stepCount++;
+
+            let countI = state.filter(s => s === IGNORANT).length;
+            let countS = state.filter(s => s === SPREADER).length;
+            let countR = state.filter(s => s === STIFLER).length;
+
+            history.I.push(countI);
+            history.S.push(countS);
+            history.R.push(countR);
+            history.t.push(stepCount);
+
+            updateStats(countI, countS, countR);
+            logEvent(msg);
+            draw();
+
+            if (countS === 0) {
+                stopAutoPlay();
+                logEvent(`Finished! Final Rumor Reach: ${((countR / N) * 100).toFixed(1)}%`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function toggleAutoPlay() {
+            if (isRunning) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            isRunning = true;
+            document.getElementById('btn-play').textContent = 'Pause';
+            document.getElementById('btn-play').style.backgroundColor = '#f59e0b';
+
+            timer = setInterval(() => {
+                let active = stepSimulation();
+                if (!active) stopAutoPlay();
+            }, speed);
+        }
+
+        function stopAutoPlay() {
+            isRunning = false;
+            clearInterval(timer);
+            document.getElementById('btn-play').textContent = 'Auto Play';
+            document.getElementById('btn-play').style.backgroundColor = 'var(--accent-color)';
+        }
+
+        function updateStats(i, s, r) {
+            document.getElementById('stat-i').textContent = `${i} (${((i/N)*100).toFixed(0)}%)`;
+            document.getElementById('stat-s').textContent = `${s} (${((s/N)*100).toFixed(0)}%)`;
+            document.getElementById('stat-r').textContent = `${r} (${((r/N)*100).toFixed(0)}%)`;
+            document.getElementById('stat-t').textContent = stepCount;
+        }
+
+        function logEvent(txt) {
+            document.getElementById('event-log').textContent = txt;
+        }
+
+        // Render functions
+        function draw() {
+            drawGraph();
+            drawChart();
+        }
+
+        function drawGraph() {
+            graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+
+            // Draw underlying complete graph edges (faint background)
+            if (N <= 40) {
+                graphCtx.strokeStyle = 'rgba(51, 65, 85, 0.15)';
+                graphCtx.lineWidth = 0.5;
+                for (let i = 0; i < N; i++) {
+                    for (let j = i + 1; j < N; j++) {
+                        graphCtx.beginPath();
+                        graphCtx.moveTo(positions[i].x, positions[i].y);
+                        graphCtx.lineTo(positions[j].x, positions[j].y);
+                        graphCtx.stroke();
+                    }
+                }
+            }
+
+            // Draw active contact line
+            if (activePair) {
+                const p1 = positions[activePair.a];
+                const p2 = positions[activePair.b];
+
+                graphCtx.strokeStyle = '#f59e0b';
+                graphCtx.lineWidth = 3;
+                graphCtx.beginPath();
+                graphCtx.moveTo(p1.x, p1.y);
+                graphCtx.lineTo(p2.x, p2.y);
+                graphCtx.stroke();
+            }
+
+            // Draw nodes
+            const nodeRadius = N > 50 ? 5 : (N > 30 ? 7 : 9);
+
+            for (let i = 0; i < N; i++) {
+                const p = positions[i];
+                graphCtx.beginPath();
+                graphCtx.arc(p.x, p.y, nodeRadius, 0, 2 * Math.PI);
+
+                if (state[i] === IGNORANT) graphCtx.fillStyle = COLOR_I;
+                else if (state[i] === SPREADER) graphCtx.fillStyle = COLOR_S;
+                else graphCtx.fillStyle = COLOR_R;
+
+                graphCtx.fill();
+                graphCtx.strokeStyle = '#0f172a';
+                graphCtx.lineWidth = 1.5;
+                graphCtx.stroke();
+
+                // Highlight active nodes
+                if (activePair && (i === activePair.a || i === activePair.b)) {
+                    graphCtx.beginPath();
+                    graphCtx.arc(p.x, p.y, nodeRadius + 4, 0, 2 * Math.PI);
+                    graphCtx.strokeStyle = '#f59e0b';
+                    graphCtx.lineWidth = 2;
+                    graphCtx.stroke();
+                }
+            }
+        }
+
+        function drawChart() {
+            chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+
+            const padding = 30;
+            const w = chartCanvas.width - 2 * padding;
+            const h = chartCanvas.height - 2 * padding;
+
+            // Draw Axes
+            chartCtx.strokeStyle = '#334155';
+            chartCtx.lineWidth = 1;
+            chartCtx.beginPath();
+            chartCtx.moveTo(padding, padding);
+            chartCtx.lineTo(padding, padding + h);
+            chartCtx.lineTo(padding + w, padding + h);
+            chartCtx.stroke();
+
+            if (history.t.length < 2) return;
+
+            const maxT = Math.max(history.t[history.t.length - 1], 20);
+
+            function getX(t) { return padding + (t / maxT) * w; }
+            function getY(val) { return padding + h - (val / N) * h; }
+
+            // Draw Curves
+            const curves = [
+                { data: history.I, color: COLOR_I },
+                { data: history.S, color: COLOR_S },
+                { data: history.R, color: COLOR_R }
+            ];
+
+            curves.forEach(c => {
+                chartCtx.strokeStyle = c.color;
+                chartCtx.lineWidth = 2.5;
+                chartCtx.beginPath();
+                for (let k = 0; k < c.data.length; k++) {
+                    let x = getX(history.t[k]);
+                    let y = getY(c.data[k]);
+                    if (k === 0) chartCtx.moveTo(x, y);
+                    else chartCtx.lineTo(x, y);
+                }
+                chartCtx.stroke();
+            });
+        }
+
+        // Init
+        setTimeout(() => {
+            resizeCanvases();
+            resetSimulation();
+        }, 100);
+    </script>
+</body>
+</html>
