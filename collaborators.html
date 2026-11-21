@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Academicons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <!-- Apache ECharts for Interactive Maps -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed">
 
@@ -42,8 +44,47 @@
                 </div>
             </div>
 
-            <!-- 1. MAIN CO-AUTHORS -->
-            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-6">
+            <!-- 0. GEOGRAPHIC NETWORK MAPS (AUTO-POPULATED FROM LISTS BELOW) -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Map 1: Supervisions by Institution Country -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900">Supervisions by Institution Country</h2>
+                                <p class="text-xs text-slate-500">Host & co-advising institutions for postdocs & students</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="students-world-map" class="w-full h-72 rounded-xl bg-slate-50/70 border border-slate-100"></div>
+                    <!-- Auto-generated pills container -->
+                    <div id="students-country-pills" class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-600"></div>
+                </div>
+
+                <!-- Map 2: Main Co-Authors by Country -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                <i class="fa-solid fa-earth-americas"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900">Main Co-Authors by Country</h2>
+                                <p class="text-xs text-slate-500">National & international research collaborations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="coauthors-world-map" class="w-full h-72 rounded-xl bg-slate-50/70 border border-slate-100"></div>
+                    <!-- Auto-generated pills container -->
+                    <div id="coauthors-country-pills" class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-600"></div>
+                </div>
+            </div>
+
+            <!-- 1. MAIN CO-AUTHORS (Each item uses data-country="..." & data-inst="...") -->
+            <div id="coauthors-list" class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
                         <i class="fa-solid fa-handshake"></i>
@@ -58,64 +99,62 @@
                             <i class="fa-solid fa-location-dot text-blue-600 mr-1"></i> Brazil
                         </h3>
                         <ul class="space-y-2 text-sm">
-                            <!-- Example WITH external link -->
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFPE" class="flex justify-between items-baseline gap-2">
                                 <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="group font-medium text-slate-800 hover:text-blue-600 transition inline-flex items-center gap-1.5">
                                     <span>Alex Ramos</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400 group-hover:text-blue-600 transition"></i>
                                 </a>
                                 <span class="text-xs text-slate-500 text-right">UFPE</span>
                             </li>
-                            <!-- Entries without links -->
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFABC" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Alejandra Rada</span>
                                 <span class="text-xs text-slate-500 text-right">UFABC</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFPE" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Caliteia Sousa</span>
                                 <span class="text-xs text-slate-500 text-right">UFPE</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="CAMPC" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Carolina Grejo</span>
                                 <span class="text-xs text-slate-500 text-right">CAMPC</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFABC" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Cristian Coletti</span>
                                 <span class="text-xs text-slate-500 text-right">UFABC</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UNICAMP" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Elcio Lebensztayn</span>
                                 <span class="text-xs text-slate-500 text-right">UNICAMP</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="IME-USP" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Fabio Machado</span>
                                 <span class="text-xs text-slate-500 text-right">IME-USP</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="ICMC-USP" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Francisco Rodrigues</span>
                                 <span class="text-xs text-slate-500 text-right">ICMC-USP</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFPE" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Luz Marina Gomez</span>
                                 <span class="text-xs text-slate-500 text-right">UFPE</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UNICAMP" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Nancy Garcia</span>
                                 <span class="text-xs text-slate-500 text-right">UNICAMP</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFRPE" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Paula Cadavid</span>
                                 <span class="text-xs text-slate-500 text-right">UFRPE</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFSCar" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Renato Gava</span>
                                 <span class="text-xs text-slate-500 text-right">UFSCar</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFSCar" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Sandro Gallo</span>
                                 <span class="text-xs text-slate-500 text-right">UFSCar</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Brazil" data-inst="UFG" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Valdivino Vargas</span>
                                 <span class="text-xs text-slate-500 text-right">UFG</span>
                             </li>
@@ -128,71 +167,71 @@
                             <i class="fa-solid fa-globe text-blue-600 mr-1"></i> International
                         </h3>
                         <ul class="space-y-2 text-sm">
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Colombia" data-inst="Univ. de Antioquia" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Alejandro Roldán</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Antioquia (COL)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Colombia" data-inst="Univ. de Antioquia" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Alexander Valencia</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Antioquia (COL)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="United Kingdom" data-inst="Univ. of South Wales" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Angelica Pachon</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. of South Wales (UK)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Colombia" data-inst="Univ. de Nariño" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Catalina Rua</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Nariño (COL)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Peru" data-inst="U. Católica San Pablo" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Daniel Gutierrez Pachas</span>
                                 <span class="text-xs text-slate-500 text-right">U. Católica San Pablo (PER)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Italy" data-inst="Univ. Milano-Bicocca" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Daniela Bertacchi</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. Milano-Bicocca (ITA)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Italy" data-inst="Sapienza Univ. di Roma" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Elena Agliari</span>
                                 <span class="text-xs text-slate-500 text-right">Sapienza Univ. di Roma (ITA)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Italy" data-inst="Politecnico di Milano" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Fabio Zucca</span>
                                 <span class="text-xs text-slate-500 text-right">Politecnico di Milano (ITA)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Italy" data-inst="CENTAI" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Guilherme Ferraz de Arruda</span>
                                 <span class="text-xs text-slate-500 text-right">CENTAI (ITA)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Colombia" data-inst="Univ. Nacional de Colombia" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Mario Estrada</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. Nacional de Colombia (COL)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Colombia" data-inst="Univ. de Antioquia" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Mary Luz Rodiño</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Antioquia (COL)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Austria" data-inst="Graz Univ. of Technology" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Mihyun Kang</span>
                                 <span class="text-xs text-slate-500 text-right">Graz Univ. of Technology (AUT)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Serbia" data-inst="Union University" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Nevena Maric</span>
                                 <span class="text-xs text-slate-500 text-right">Union University (SRB)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="United States" data-inst="Univ. of Colorado" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Rinaldo Schinazi</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. of Colorado (USA)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Argentina" data-inst="UNPSJB" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Sebastián Vidal</span>
                                 <span class="text-xs text-slate-500 text-right">UNPSJB (ARG)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Spain" data-inst="Univ. de Zaragoza" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Yamir Moreno</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Zaragoza (ESP)</span>
                             </li>
-                            <li class="flex justify-between items-baseline gap-2">
+                            <li data-country="Spain" data-inst="Univ. de Málaga" class="flex justify-between items-baseline gap-2">
                                 <span class="font-medium text-slate-800">Yolanda Cabrera Casado</span>
                                 <span class="text-xs text-slate-500 text-right">Univ. de Málaga (ESP)</span>
                             </li>
@@ -207,8 +246,8 @@
                 </div>
             </div>
 
-            <!-- 2. POSTDOCS & STUDENTS -->
-            <div class="grid lg:grid-cols-12 gap-6">
+            <!-- 2. POSTDOCS & STUDENTS (Each item uses data-country="..." & data-inst="...") -->
+            <div id="students-list" class="grid lg:grid-cols-12 gap-6">
                 
                 <!-- Current Group (Left Column - 5 cols) -->
                 <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
@@ -226,22 +265,22 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-2">Ph.D. Candidates</h3>
                         <ul class="space-y-2.5 text-sm">
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <a href="http://lattes.cnpq.br/" target="_blank" rel="noopener noreferrer" class="group font-medium text-slate-800 hover:text-blue-600 transition inline-flex items-center gap-1.5">
                                     <span>Ana Diaz Bacca</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400 group-hover:text-blue-600 transition"></i>
                                 </a>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Mar/2026 (CAPES)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">José Manuel Jaramillo</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Mar/2025 (FACEPE)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Mariana Alves França</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Aug/2024 (FACEPE)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Jhon Puerres</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Aug/2023 (FACEPE)</div>
                             </li>
@@ -252,15 +291,15 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-2">Master's Students</h3>
                         <ul class="space-y-2.5 text-sm">
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Juan F. Mafla Ramírez</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Mar/2026 (FACEPE)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Frandeiker Castro Julio</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Aug/2025 (FACEPE)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="PPGE-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Renato Silva</div>
                                 <div class="text-xs text-slate-500">PPGE-UFPE · Since Aug/2024 (FACEPE)</div>
                             </li>
@@ -271,15 +310,15 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-2">Undergraduate Research</h3>
                         <ul class="space-y-2.5 text-sm">
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Brazil" data-inst="Statistics-UFPE" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Taladi Lankoande</div>
                                 <div class="text-xs text-slate-500">Statistics, UFPE · Since Sep/2026 (CNPq)</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Peru" data-inst="UCSP" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Alan Patrizio Alvarez Puma*</div>
                                 <div class="text-xs text-slate-500">Computer Science, UCSP (PER) · Since Mar/2026</div>
                             </li>
-                            <li class="border-l-2 border-blue-200 pl-3">
+                            <li data-country="Peru" data-inst="UCSP" class="border-l-2 border-blue-200 pl-3">
                                 <div class="font-medium text-slate-800">Mariana Caceres*</div>
                                 <div class="text-xs text-slate-500">Computer Science, UCSP (PER) · Since May/2024</div>
                             </li>
@@ -301,15 +340,15 @@
                         <div>
                             <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1.5 mb-2.5">Postdoctoral Researchers</h3>
                             <ul class="space-y-2 text-sm">
-                                <li>
+                                <li data-country="Brazil" data-inst="UFPE">
                                     <span class="font-medium text-slate-800 block">Luz Marina Gomez</span>
                                     <span class="text-xs text-slate-500">Apr/2024 · BFP-FACEPE</span>
                                 </li>
-                                <li>
+                                <li data-country="Brazil" data-inst="PPGE-UFPE">
                                     <span class="font-medium text-slate-800 block">Mario Estrada</span>
                                     <span class="text-xs text-slate-500">PPGE · Apr/2020 – Aug/2021 (CAPES)</span>
                                 </li>
-                                <li>
+                                <li data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)">
                                     <span class="font-medium text-slate-800 block">Carolina Grejo</span>
                                     <span class="text-xs text-slate-500">PIPGEs · 2017 – 2019 (CAPES)</span>
                                 </li>
@@ -319,8 +358,7 @@
                         <div>
                             <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1.5 mb-2.5">Ph.D. Alumni</h3>
                             <ul class="space-y-2 text-sm">
-                                <!-- Example WITH both Profile Link and Thesis PDF Link -->
-                                <li>
+                                <li data-country="Brazil" data-inst="PPGE-UFPE">
                                     <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="group font-medium text-slate-800 hover:text-blue-600 transition inline-flex items-center gap-1.5">
                                         <span>Jean Carlos Cardoso</span>
                                         <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400 group-hover:text-blue-600 transition"></i>
@@ -332,15 +370,15 @@
                                         </a>
                                     </div>
                                 </li>
-                                <li>
+                                <li data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)">
                                     <span class="font-medium text-slate-800 block">Adalto Speroto</span>
                                     <span class="text-xs text-slate-500">PIPGEs · Apr/2021 (CAPES)</span>
                                 </li>
-                                <li>
+                                <li data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)">
                                     <span class="font-medium text-slate-800 block">Carlos Hirth</span>
                                     <span class="text-xs text-slate-500">PIPGEs · Jan/2020 (CAPES)</span>
                                 </li>
-                                <li>
+                                <li data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)">
                                     <span class="font-medium text-slate-800 block">Karina Oliveira</span>
                                     <span class="text-xs text-slate-500">PIPGEs · Apr/2019 (CAPES/FAPESP)</span>
                                 </li>
@@ -352,11 +390,11 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1.5 mb-2.5">Master's Alumni</h3>
                         <div class="grid sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                            <div><span class="font-medium text-slate-800">Christian Pistala**</span> <span class="text-xs text-slate-500 block">UDENAR (COL) · Aug/2025</span></div>
-                            <div><span class="font-medium text-slate-800">José Manuel Jaramillo</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2025 (FACEPE)</span></div>
-                            <div><span class="font-medium text-slate-800">Mariana Alves de França</span> <span class="text-xs text-slate-500 block">PPGE · Jul/2024 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Débora Cordeiro</span> <span class="text-xs text-slate-500 block">PPGE · Apr/2024 (FACEPE)</span></div>
-                            <div>
+                            <div data-country="Colombia" data-inst="UDENAR"><span class="font-medium text-slate-800">Christian Pistala**</span> <span class="text-xs text-slate-500 block">UDENAR (COL) · Aug/2025</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">José Manuel Jaramillo</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2025 (FACEPE)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Mariana Alves de França</span> <span class="text-xs text-slate-500 block">PPGE · Jul/2024 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Débora Cordeiro</span> <span class="text-xs text-slate-500 block">PPGE · Apr/2024 (FACEPE)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE">
                                 <span class="font-medium text-slate-800 block">Ana Diaz</span>
                                 <div class="text-xs text-slate-500 flex flex-wrap items-center gap-1.5 mt-0.5">
                                     <span>PPGE · Apr/2024 (FACEPE)</span>
@@ -365,17 +403,17 @@
                                     </a>
                                 </div>
                             </div>
-                            <div><span class="font-medium text-slate-800">Jhon Puerres</span> <span class="text-xs text-slate-500 block">PPGE · Aug/2023 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">João Gondim</span> <span class="text-xs text-slate-500 block">PPGE · Jul/2023</span></div>
-                            <div><span class="font-medium text-slate-800">Luciano Mendes</span> <span class="text-xs text-slate-500 block">PPGE · Aug/2022 (FACEPE)</span></div>
-                            <div><span class="font-medium text-slate-800">Diego da Silva Santos</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2022 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Thomas Freud</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2022 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Ricardo Caldas</span> <span class="text-xs text-slate-500 block">PIPGEs · Feb/2020</span></div>
-                            <div><span class="font-medium text-slate-800">Dimas Rocha</span> <span class="text-xs text-slate-500 block">PROFMAT · Feb/2018 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Elizbeth Bedia</span> <span class="text-xs text-slate-500 block">PIPGEs · Mar/2016 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Eduardo Sartoretto</span> <span class="text-xs text-slate-500 block">CCMC · Mar/2016 (CNPq)</span></div>
-                            <div><span class="font-medium text-slate-800">Cristel Vera Tapia</span> <span class="text-xs text-slate-500 block">PIPGEs · Mar/2015 (CAPES)</span></div>
-                            <div><span class="font-medium text-slate-800">Karina E. de Oliveira</span> <span class="text-xs text-slate-500 block">CCMC · Jan/2015 (FAPESP)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Jhon Puerres</span> <span class="text-xs text-slate-500 block">PPGE · Aug/2023 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">João Gondim</span> <span class="text-xs text-slate-500 block">PPGE · Jul/2023</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Luciano Mendes</span> <span class="text-xs text-slate-500 block">PPGE · Aug/2022 (FACEPE)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Diego da Silva Santos</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2022 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="PPGE-UFPE"><span class="font-medium text-slate-800">Thomas Freud</span> <span class="text-xs text-slate-500 block">PPGE · Feb/2022 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)"><span class="font-medium text-slate-800">Ricardo Caldas</span> <span class="text-xs text-slate-500 block">PIPGEs · Feb/2020</span></div>
+                            <div data-country="Brazil" data-inst="PROFMAT (ICMC-USP)"><span class="font-medium text-slate-800">Dimas Rocha</span> <span class="text-xs text-slate-500 block">PROFMAT · Feb/2018 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)"><span class="font-medium text-slate-800">Elizbeth Bedia</span> <span class="text-xs text-slate-500 block">PIPGEs · Mar/2016 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="CCMC (ICMC-USP)"><span class="font-medium text-slate-800">Eduardo Sartoretto</span> <span class="text-xs text-slate-500 block">CCMC · Mar/2016 (CNPq)</span></div>
+                            <div data-country="Brazil" data-inst="PIPGEs (UFSCar/USP)"><span class="font-medium text-slate-800">Cristel Vera Tapia</span> <span class="text-xs text-slate-500 block">PIPGEs · Mar/2015 (CAPES)</span></div>
+                            <div data-country="Brazil" data-inst="CCMC (ICMC-USP)"><span class="font-medium text-slate-800">Karina E. de Oliveira</span> <span class="text-xs text-slate-500 block">CCMC · Jan/2015 (FAPESP)</span></div>
                         </div>
                     </div>
 
@@ -383,11 +421,11 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1.5 mb-2.5">Undergraduate Projects (TCC)</h3>
                         <div class="grid sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                            <div><span class="font-medium text-slate-800">Jose Jaramillo*</span> <span class="text-xs text-slate-500 block">U. Antioquia (COL) · Apr/2022</span></div>
-                            <div><span class="font-medium text-slate-800">Ana Diaz*</span> <span class="text-xs text-slate-500 block">U. de Nariño (COL) · Feb/2022</span></div>
-                            <div><span class="font-medium text-slate-800">Matheus Souza</span> <span class="text-xs text-slate-500 block">Statistics, USP · Aug/2019 (CNPq)</span></div>
-                            <div><span class="font-medium text-slate-800">Caio Moura</span> <span class="text-xs text-slate-500 block">Statistics, USP · Jul/2017 (FAPESP)</span></div>
-                            <div><span class="font-medium text-slate-800">Emanuel Rodriguez</span> <span class="text-xs text-slate-500 block">Informatics, UNPSJB (ARG) · Sep/2016</span></div>
+                            <div data-country="Colombia" data-inst="Univ. de Antioquia"><span class="font-medium text-slate-800">Jose Jaramillo*</span> <span class="text-xs text-slate-500 block">U. Antioquia (COL) · Apr/2022</span></div>
+                            <div data-country="Colombia" data-inst="Univ. de Nariño"><span class="font-medium text-slate-800">Ana Diaz*</span> <span class="text-xs text-slate-500 block">U. de Nariño (COL) · Feb/2022</span></div>
+                            <div data-country="Brazil" data-inst="Statistics-USP"><span class="font-medium text-slate-800">Matheus Souza</span> <span class="text-xs text-slate-500 block">Statistics, USP · Aug/2019 (CNPq)</span></div>
+                            <div data-country="Brazil" data-inst="Statistics-USP"><span class="font-medium text-slate-800">Caio Moura</span> <span class="text-xs text-slate-500 block">Statistics, USP · Jul/2017 (FAPESP)</span></div>
+                            <div data-country="Argentina" data-inst="UNPSJB"><span class="font-medium text-slate-800">Emanuel Rodriguez</span> <span class="text-xs text-slate-500 block">Informatics, UNPSJB (ARG) · Sep/2016</span></div>
                         </div>
                     </div>
                 </div>
@@ -407,6 +445,152 @@
     <footer class="border-t border-slate-200 bg-white mt-16 py-6 text-center text-xs text-slate-400">
         &copy; 2026 Pablo M. Rodriguez · Department of Statistics, UFPE
     </footer>
+
+    <!-- Auto-Counting & Interactive Maps Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        // Helper: Automatically aggregate counts and unique institutions from DOM elements
+        function aggregateByCountry(containerSelector) {
+            const items = document.querySelectorAll(`${containerSelector} [data-country]`);
+            const stats = {};
+
+            items.forEach(item => {
+                const country = item.getAttribute('data-country').trim();
+                const inst = (item.getAttribute('data-inst') || '').trim();
+                if (!country) return;
+
+                if (!stats[country]) {
+                    stats[country] = { value: 0, institutions: new Set() };
+                }
+                stats[country].value += 1;
+                if (inst) stats[country].institutions.add(inst);
+            });
+
+            // Convert Sets to comma-separated strings
+            Object.keys(stats).forEach(country => {
+                stats[country].instText = Array.from(stats[country].institutions).join(', ');
+            });
+
+            return stats;
+        }
+
+        // Helper: Render summary pills under each map automatically
+        function renderPills(containerId, stats, colorTheme) {
+            const container = document.getElementById(containerId);
+            const sorted = Object.entries(stats).sort((a, b) => b[1].value - a[1].value);
+
+            container.innerHTML = sorted.map(([country, info], idx) => {
+                const badgeClass = colorTheme === 'blue'
+                    ? (idx < 2 ? 'bg-blue-100 text-blue-800' : 'bg-blue-50 text-blue-700')
+                    : (idx < 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-emerald-50 text-emerald-700');
+                return `<span class="px-2 py-0.5 rounded ${badgeClass} font-medium">${country} (${info.value})</span>`;
+            }).join('');
+        }
+
+        // 1. Aggregate live data directly from the HTML lists
+        const supervisionData = aggregateByCountry('#students-list');
+        const coauthorData = aggregateByCountry('#coauthors-list');
+
+        renderPills('students-country-pills', supervisionData, 'blue');
+        renderPills('coauthors-country-pills', coauthorData, 'emerald');
+
+        // 2. Initialize ECharts Maps
+        const studentsChart = echarts.init(document.getElementById('students-world-map'));
+        const coauthorsChart = echarts.init(document.getElementById('coauthors-world-map'));
+
+        studentsChart.showLoading({ color: '#2563eb' });
+        coauthorsChart.showLoading({ color: '#059669' });
+
+        try {
+            const worldRes = await fetch('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/world.json');
+            const worldJson = await worldRes.json();
+            echarts.registerMap('world', worldJson);
+
+            studentsChart.hideLoading();
+            coauthorsChart.hideLoading();
+
+            const maxSupervisions = Math.max(...Object.values(supervisionData).map(d => d.value), 1);
+            const maxCoauthors = Math.max(...Object.values(coauthorData).map(d => d.value), 1);
+
+            // MAP 1: Supervisions by Institution Country
+            studentsChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: '#0f172a',
+                    borderWidth: 0,
+                    textStyle: { color: '#f8fafc', fontSize: 12 },
+                    formatter: function (params) {
+                        const info = supervisionData[params.name];
+                        if (!info) return `${params.name}: 0 supervisions`;
+                        return `<strong>${params.name}</strong><br/>Supervisions: ${info.value}<br/><span style="color:#94a3b8;font-size:11px;">${info.instText}</span>`;
+                    }
+                },
+                visualMap: {
+                    min: 1,
+                    max: maxSupervisions,
+                    show: false,
+                    inRange: { color: ['#93c5fd', '#2563eb', '#1e3a8a'] }
+                },
+                series: [{
+                    type: 'map',
+                    map: 'world',
+                    roam: true,
+                    zoom: 1.85,
+                    center: [-62, -16],
+                    itemStyle: { areaColor: '#e2e8f0', borderColor: '#ffffff', borderWidth: 0.7 },
+                    emphasis: { label: { show: false }, itemStyle: { areaColor: '#3b82f6' } },
+                    data: Object.keys(supervisionData).map(country => ({
+                        name: country,
+                        value: supervisionData[country].value
+                    }))
+                }]
+            });
+
+            // MAP 2: Main Co-Authors by Country
+            coauthorsChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: '#0f172a',
+                    borderWidth: 0,
+                    textStyle: { color: '#f8fafc', fontSize: 12 },
+                    formatter: function (params) {
+                        const info = coauthorData[params.name];
+                        if (!info) return `${params.name}: 0 co-authors`;
+                        return `<strong>${params.name}</strong><br/>Main Co-Authors: ${info.value}<br/><span style="color:#94a3b8;font-size:11px;">${info.instText}</span>`;
+                    }
+                },
+                visualMap: {
+                    min: 1,
+                    max: maxCoauthors,
+                    show: false,
+                    inRange: { color: ['#6ee7b7', '#10b981', '#065f46'] }
+                },
+                series: [{
+                    type: 'map',
+                    map: 'world',
+                    roam: true,
+                    zoom: 1.15,
+                    center: [-20, 15],
+                    itemStyle: { areaColor: '#e2e8f0', borderColor: '#ffffff', borderWidth: 0.7 },
+                    emphasis: { label: { show: false }, itemStyle: { areaColor: '#34d399' } },
+                    data: Object.keys(coauthorData).map(country => ({
+                        name: country,
+                        value: coauthorData[country].value
+                    }))
+                }]
+            });
+        } catch (err) {
+            studentsChart.hideLoading();
+            coauthorsChart.hideLoading();
+            console.error('Failed to load world map data:', err);
+        }
+
+        window.addEventListener('resize', () => {
+            studentsChart.resize();
+            coauthorsChart.resize();
+        });
+    });
+    </script>
 
 </body>
 </html>
